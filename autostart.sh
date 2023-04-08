@@ -1,11 +1,11 @@
 #!/bin/sh
 
-sleep 1;
 #xrandr --output HDMI1 --mode 1920x1080 --left-of eDP1;
 nitrogen --restore;
 picom &
 
 WiFi=""
+B=""
 B0=""
 B1=""
 B2=""
@@ -27,7 +27,9 @@ while true; do
  VOL_LEVEL=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume:" | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
  STATE=$(cat /sys/class/power_supply/BAT1/status)
 
- if [ "$BATTERY_LEVEL" -lt "10" ];  then
+ if [ "$STATE" = "Charging" ] || [ "$STATE" = "Full" ];  then
+  BATTERY=$B
+ elif [ "$BATTERY_LEVEL" -lt "10" ];  then
   BATTERY=$B0
  elif [ "$BATTERY_LEVEL" -gt "10" ] && [ "$BATTERY_LEVEL" -lt "30" ];  then 
   BATTERY=$B1
@@ -48,6 +50,13 @@ while true; do
   VOLUME=$V3
  fi
  SSID=$(iwctl station wlan0 show | grep Connected\ network | sed 's/Connected\ network//')
- xsetroot -name "  $a$V3  $b$VOL_LEVEL%  $c  $a$WiFi  $b${SSID//[[:blank:]]/}   $c  $a$BATTERY  $b$(cat /sys/class/power_supply/BAT1/capacity)%  $c  $b$(date +'%d %b, %y %l:%M %p')      ";
- sleep 30;
+ SSIDCLEANED=${SSID//[[:blank:]]/}
+ echo ${#SSIDCLEANED} > ~/test.txt
+ if [ ${#SSIDCLEANED} = 0 ]; then
+  SSIDCLEANED=" not connected"
+ else
+  SSIDCLEANED=$SSIDCLEANED
+ fi
+ xsetroot -name "   $a$V3  $b$VOL_LEVEL%  $c  $a$WiFi  $b$SSIDCLEANED   $c  $a$BATTERY  $b$(cat /sys/class/power_supply/BAT1/capacity)%  $c  $b$(date +'%d %b, %y %l:%M %p')     ";
+ sleep 30
 done
