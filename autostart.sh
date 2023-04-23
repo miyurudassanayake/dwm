@@ -15,18 +15,19 @@ V0=""
 V1=""
 V2=""
 V3=""
+SUN=""
 BATTERY=""
 VOLUME=""
 
-a="^c#f9a82b^"
-b="^c#f9e2c0^"
-c="^c#373b41^|"
+a="^c#fff7d0^"
+b="^c#93a1a1^"
+c="^c#93a1a1^|"
 
 while true; do
  BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
  VOL_LEVEL=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume:" | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
  STATE=$(cat /sys/class/power_supply/BAT1/status)
-
+ BACKLIGHT=$(xbacklight -get | tr "." "\n" | head -n 1)
  if [ "$STATE" = "Charging" ] || [ "$STATE" = "Full" ];  then
   BATTERY=$B
  elif [ "$BATTERY_LEVEL" -lt "10" ];  then
@@ -57,6 +58,6 @@ while true; do
  else
   SSIDCLEANED=$SSIDCLEANED
  fi
- xsetroot -name "   $a$V3  $b$VOL_LEVEL%  $c  $a$WiFi  $b$SSIDCLEANED   $c  $a$BATTERY  $b$(cat /sys/class/power_supply/BAT1/capacity)%  $c  $b$(date +'%d %b, %y %l:%M %p')     ";
+ xsetroot -name "   $a$SUN  $b$BACKLIGHT%  $c  $a$V3  $b$VOL_LEVEL%  $c  $a$WiFi  $b$SSIDCLEANED   $c  $a$BATTERY  $b$(cat /sys/class/power_supply/BAT1/capacity)%  $c  $b$(date +'%d %b, %y %l:%M %p')     ";
  sleep 30
 done

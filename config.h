@@ -1,5 +1,3 @@
-//#include <X11/XF86keysym.h>
-
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 16;       /* snap pixel */
@@ -11,23 +9,39 @@ static const int sidepad            = 5;       /* horizontal padding of bar */
 static const unsigned int gappx     = 5;
 static const char *fonts[]          = { "Ubuntu:size=13","monospace:size=14" };
 static const char dmenufont[]       = "monospace:size=14";
-static const char col_gray1[]       = "#190b10"; //Bar bg
-static const char col_gray2[]       = "#5f100a"; //Bar bg sel
-static const char col_gray3[]       = "#f9dfaa"; //Bar Text
-static const char col_gray4[]       = "#f9a82b"; //Sel Text
-static const char col_cyan[]        = "#45140e"; //Sel Bar
+static const char col_gray1[]       = "#141b1e"; //Bar bg
+static const char col_gray2[]       = "#fff7d0"; //Bar bg sel
+static const char col_gray3[]       = "#94ade4"; //Bar Text
+static const char col_gray4[]       = "#2a4756"; //Sel Text
+static const char col_cyan[]        = "#141b1e"; //Sel Bar
+
+static const char s_base03[]        = "#002b36";
+static const char s_base02[]        = "#073642";
+static const char s_base01[]        = "#586375";
+static const char s_base00[]        = "#657b83";
+static const char s_base0[]         = "#839496";
+static const char s_base1[]         = "#93a1a1";
+static const char s_base2[]         = "#eee8d5";
+static const char s_base3[]         = "#fdf6e3";
+
 static const char *colors[][3]      = {
+
+/* solarized colors http://ethanschoonover.com/solarized */
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	// [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+	// [SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	{ s_base0, s_base03, s_base1 },      /* SchemeNorm dark */
+	{ s_base0, s_base02, s_base1 },      /* SchemeSel dark */
+	{ col_gray3, col_gray1, col_gray2 }, /* SchemeNorm orig */
+	{ col_gray4, col_cyan,  col_cyan  }, /* SchemeSel orig */
 };
 
 /* tagging */
 #define MAX_TAGNAME_LEN 14		/* excludes TAG_PREPEND */
 #define TAG_PREPEND "%1i:"		/* formatted as 2 chars */
 #define MAX_TAGLEN 16			/* altogether */
-static char tags[][MAX_TAGLEN] = { "", "", "", "", "" };
-//static const char *tags[] = { "", "", "", "", "" };
+static char tags[][MAX_TAGLEN] = { "", "", "", "", "", "" };
+//static const char *tags[] = { "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -104,6 +118,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
+	{ MODKEY|ShiftMask,             XK_t,      schemeToggle,   {0} },
+	{ MODKEY|ShiftMask,             XK_z,      schemeCycle,    {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
